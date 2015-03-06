@@ -71,7 +71,6 @@ if [ -n "${DB_USER}" -o -n "${DB_PASS}" ]; then
 		  mysql -e "GRANT ALL PRIVILEGES ON *.* TO '${DB_USER}' IDENTIFIED BY '${DB_PASS}';"
 		  mysql -e "GRANT ALL PRIVILEGES ON *.* TO '${DB_USER}'@"localhost" IDENTIFIED BY '${DB_PASS}';"
         fi
-      done
   /usr/bin/mysqladmin shutdown
 fi
 
