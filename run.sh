@@ -4,9 +4,6 @@ set -e
 DB_USER=${DB_USER:-}
 DB_PASS=${DB_PASS:-}
 gcomm=${gcomm:-"//"}
-gcomm1=${gcomm1:-}
-gcomm2=${gcomm2:-}
-gcomm2=${gcomm3:-}
 
 # fix permissions and ownership of /var/lib/mysql
 mkdir -p -m 700 /var/lib/mysql
@@ -17,21 +14,6 @@ if [ -n "${gcomm}" ]; then
 	sed -i 's*#wsrep_cluster_address="dummy://"*wsrep_cluster_address="dummy://"*' /etc/my.cnf.d/wsrep.cnf
 	sed -i 's*dummy://*gcomm:'${gcomm}'*' /etc/my.cnf.d/wsrep.cnf
 fi	
-
-if [ -n "${gcomm}" -o -n "${gcomm1}" ]; then
-	sed -i 's*#wsrep_cluster_address="dummy://"*wsrep_cluster_address="dummy://"*' /etc/my.cnf.d/wsrep.cnf
-	sed -i 's*dummy://*gcomm:'${gcomm1}'*' /etc/my.cnf.d/wsrep.cnf
-fi
-
-if [ -n "${gcomm}" -o -n "${gcomm2}" ]; then
-	sed -i 's*#wsrep_cluster_address="dummy://"*wsrep_cluster_address="dummy://"*' /etc/my.cnf.d/wsrep.cnf
-	sed -i 's*dummy://*gcomm:'${gcomm2}'*' /etc/my.cnf.d/wsrep.cnf
-fi
-
-if [ -n "${gcomm}" -o -n "${gcomm3}" ]; then
-	sed -i 's*#wsrep_cluster_address="dummy://"*wsrep_cluster_address="dummy://"*' /etc/my.cnf.d/wsrep.cnf
-	sed -i 's*dummy://*gcomm:'${gcomm3}'*' /etc/my.cnf.d/wsrep.cnf
-fi
 
 # wsrep_sst_auth
 if [ -n "${DB_USER}" -o -n "${DB_PASS}" ]; then
