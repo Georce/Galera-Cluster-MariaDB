@@ -64,14 +64,17 @@ fi
 
 # wsrep_cluster_address
 if [ -n "${gcomm}" ]; then
-	sed -i 's*#wsrep_cluster_address="dummy://"*wsrep_cluster_address="dummy://"*' /etc/my.cnf.d/wsrep.cnf
-	sed -i 's*dummy://*gcomm:'${gcomm}'*' /etc/my.cnf.d/wsrep.cnf
+	sed -i 's*#wsrep_cluster_address="dummy://"*wsrep_cluster_address="dummy://"*' /usr/share/mysql/wsrep.cnf
+	sed -i 's*dummy://*gcomm:'${gcomm}'*' /usr/share/mysql/wsrep.cnf
+	sed -i 's*wsrep_provider=none*wsrep_provider=/usr/lib64/galera/libgalera_smm.so*' /usr/share/mysql/wsrep.cnf
 fi	
 
 # wsrep_sst_auth
 if [ -n "${DB_USER}" -o -n "${DB_PASS}" ]; then
-sed -i 's*wsrep_sst_auth=root:*wsrep_sst_auth='${DB_USER}':'${DB_PASS}'*' /etc/my.cnf.d/wsrep.cnf
+sed -i 's*wsrep_sst_auth=root:*wsrep_sst_auth='${DB_USER}':'${DB_PASS}'*' /usr/share/mysql/wsrep.cnf
 fi
+
+cp /usr/share/mysql/wsrep.cnf /etc/my.cnf.d/.
 
 service mysql start
 
