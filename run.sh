@@ -9,17 +9,6 @@ gcomm=${gcomm:-"//"}
 mkdir -p -m 700 /var/lib/mysql
 chown -R mysql:mysql /var/lib/mysql
 
-# wsrep_cluster_address
-if [ -n "${gcomm}" ]; then
-	sed -i 's*#wsrep_cluster_address="dummy://"*wsrep_cluster_address="dummy://"*' /etc/my.cnf.d/wsrep.cnf
-	sed -i 's*dummy://*gcomm:'${gcomm}'*' /etc/my.cnf.d/wsrep.cnf
-fi	
-
-# wsrep_sst_auth
-if [ -n "${DB_USER}" -o -n "${DB_PASS}" ]; then
-sed -i 's*wsrep_sst_auth=root:*wsrep_sst_auth='${DB_USER}':'${DB_PASS}'*' /etc/my.cnf.d/wsrep.cnf
-fi
-
 # initialize MySQL data directory
 if [ ! -d /var/lib/mysql/mysql ]; then
   echo "Installing database..."
@@ -71,6 +60,17 @@ if [ -n "${DB_USER}" -o -n "${DB_PASS}" ]; then
         fi
         
   /usr/bin/mysqladmin shutdown
+fi
+
+# wsrep_cluster_address
+if [ -n "${gcomm}" ]; then
+	sed -i 's*#wsrep_cluster_address="dummy://"*wsrep_cluster_address="dummy://"*' /etc/my.cnf.d/wsrep.cnf
+	sed -i 's*dummy://*gcomm:'${gcomm}'*' /etc/my.cnf.d/wsrep.cnf
+fi	
+
+# wsrep_sst_auth
+if [ -n "${DB_USER}" -o -n "${DB_PASS}" ]; then
+sed -i 's*wsrep_sst_auth=root:*wsrep_sst_auth='${DB_USER}':'${DB_PASS}'*' /etc/my.cnf.d/wsrep.cnf
 fi
 
 service mysql start
